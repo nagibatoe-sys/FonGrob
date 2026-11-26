@@ -22,7 +22,9 @@ nav { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 2rem 0; }
 .line article, .line section { border:1px solid #273340; border-radius:12px; padding:1.5rem; background:#131a22; margin-bottom:1rem; }
 .line h2 { font-size:1.3rem; }
 .line label { display:grid; gap:.4rem; margin-bottom:1rem; }
-.line input,.line textarea { font:inherit; color:#f8fafc; background:#19232d; border:1px solid #64748b; padding:.7rem; border-radius:6px; }
+.line input,.line textarea,.line select { font:inherit; color:#f8fafc; background:#19232d; border:1px solid #64748b; padding:.7rem; border-radius:6px; }
+.line-filters { display:grid; grid-template-columns:minmax(0,2fr) minmax(200px,1fr); gap:1rem; align-items:end; }
+@media(max-width:650px) { .line-filters { grid-template-columns:1fr; } }
 .line button { font:inherit; cursor:pointer; background:#75e5a0; color:#0b0f14; border:0; border-radius:6px; padding:.65rem .9rem; margin:.3rem; }
 .line button:disabled { opacity:.45; cursor:default; }
 .line small { color:#94a3b8; }

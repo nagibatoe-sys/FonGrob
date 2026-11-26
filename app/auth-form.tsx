@@ -14,7 +14,8 @@ export function AuthForm() {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     const client = createAuth()
-    const { data } = client.onAuthStateChange((_, session) => { setAuth(client); setEmail(session?.user.email || '') })
+    void client.getSession().then(({ data }) => { setAuth(client); setEmail(data.session?.user.email || '') })
+    const { data } = client.onAuthStateChange((_, session) => { setEmail(session?.user.email || '') })
     return () => data.subscription.unsubscribe()
   }, [])
   async function submit(event: FormEvent<HTMLFormElement>) {
