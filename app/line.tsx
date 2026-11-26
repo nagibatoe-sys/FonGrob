@@ -13,7 +13,6 @@ export function Line() {
   const [message, setMessage] = useState('Загрузка…')
   const [busy, setBusy] = useState(false)
   const [selection, setSelection] = useState<{ event: string; outcome: Outcome; key: string }>()
-  const [invite, setInvite] = useState('')
   const [search, setSearch] = useState('')
   async function refresh() {
     const db = browserClient()
@@ -94,16 +93,6 @@ export function Line() {
       <form onSubmit={propose}><label>Название<input name="title" minLength={5} maxLength={160} required /></label>
         <label>Условия результата<textarea name="rules" minLength={10} maxLength={2000} required /></label>
         <label>Приём прогнозов до<input name="date" type="datetime-local" required /></label><button disabled={busy}>Отправить на модерацию</button></form></section>
-    {admin && <section><h2>Пригласить сотрудника</h2><form onSubmit={event => {
-      event.preventDefault()
-      const recipient = String(new FormData(event.currentTarget).get('recipient'))
-      void run(async () => {
-        const result = await browserClient().rpc('issue_invitation', { recipient })
-        if (!result.error) setInvite(String(result.data))
-        return result
-      })
-    }}><label>Рабочая почта<input name="recipient" type="email" required /></label><button disabled={busy}>Создать приглашение</button></form>
-      {invite && <p>Одноразовый код для сотрудника <code>{invite}</code>. Срок действия — 7 дней.</p>}</section>}
     <section><h2>Мои прогнозы</h2>{bets.length ? bets.map(bet => <p key={bet.id}>{bet.stake} OC × {bet.odds} · {({pending:'Ожидает результата',won:'Выигрыш',lost:'Проигрыш',void:'Возврат'})[bet.status as 'pending' | 'won' | 'lost' | 'void']}</p>) : <p>Прогнозов пока нет.</p>}</section>
   </main>
 }

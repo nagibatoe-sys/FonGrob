@@ -1,4 +1,2 @@
-import { AuthForm } from '../auth-form'
-export default function Page() {
-  return <AuthForm register />
-}
+import { redirect } from 'next/navigation'
+export default function Page() { redirect('/login') }

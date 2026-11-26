@@ -1,4 +1,2 @@
-import { PasswordForm } from '../password-form'
-export default function Page() {
-  return <PasswordForm />
-}
+import { redirect } from 'next/navigation'
+export default function Page() { redirect('/login') }

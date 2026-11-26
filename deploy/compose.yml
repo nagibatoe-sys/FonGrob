@@ -33,15 +33,9 @@ services:
       GOTRUE_JWT_EXP: 3600
       GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
       GOTRUE_MAILER_AUTOCONFIRM: "false"
-      GOTRUE_DISABLE_SIGNUP: "false"
-      GOTRUE_URI_ALLOW_LIST: ${PUBLIC_URL}/login,${PUBLIC_URL}/reset-password
-      GOTRUE_MAILER_URLPATHS_CONFIRMATION: /auth/v1/verify
-      GOTRUE_MAILER_URLPATHS_RECOVERY: /auth/v1/verify
-      GOTRUE_SMTP_HOST: ${SMTP_HOST:?Set SMTP_HOST}
-      GOTRUE_SMTP_PORT: ${SMTP_PORT:-587}
-      GOTRUE_SMTP_USER: ${SMTP_USER}
-      GOTRUE_SMTP_PASS: ${SMTP_PASS}
-      GOTRUE_SMTP_ADMIN_EMAIL: ${SMTP_FROM:?Set SMTP_FROM}
+      GOTRUE_DISABLE_SIGNUP: "true"
+    ports:
+      - "127.0.0.1:9999:9999"
   rest:
     image: postgrest/postgrest:v12.2.12
     restart: unless-stopped
