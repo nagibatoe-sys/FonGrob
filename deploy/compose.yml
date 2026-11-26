@@ -16,7 +16,7 @@ services:
       timeout: 3s
       retries: 30
   auth:
-    image: supabase/gotrue:v2.185.0
+    image: ghcr.io/supabase/gotrue:v2.185.0
     restart: unless-stopped
     depends_on:
       db:
