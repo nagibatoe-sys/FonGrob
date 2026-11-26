@@ -1,0 +1,29 @@
+:root { color-scheme: dark; background: #0b0f14; color: #f8fafc; font: 18px/1.55 system-ui, sans-serif; }
+body { margin: 0; }
+main { max-width: 50rem; margin: auto; padding: clamp(2rem,8vw,7rem) 6vw; }
+header { color: #22c55e; font-weight: 800; letter-spacing: .08em; }
+h1 { font-size: clamp(2.2rem,7vw,5rem); line-height: 1.04; letter-spacing: -.045em; }
+p { max-width: 37rem; }
+aside { border-top: 1px solid #273340; padding-top: 1rem; margin-top: 3rem; color: #94a3b8; }
+a { color: #75e5a0; }
+nav { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 2rem 0; }
+.auth { max-width: 34rem; }
+.auth h1 { font-size: clamp(2rem,5vw,3.4rem); }
+.auth label { display: grid; gap: .35rem; margin-bottom: 1rem; }
+.auth input, .auth button { font: inherit; padding: .65rem .9rem; border-radius: .4rem; }
+.auth input { background: #131a22; color: white; border: 1px solid #64748b; }
+.auth button { background: #75e5a0; color: #0b0f14; border: 0; cursor: pointer; }
+.auth select { font: inherit; padding: .65rem .9rem; border-radius: .4rem; background: #131a22; color: white; border: 1px solid #64748b; }
+.line { max-width: 1100px; }
+.line h1 { font-size: clamp(2rem,5vw,4rem); }
+.line header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+.line nav { font-size: 1rem; letter-spacing:0; }
+.event-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:1rem; margin-top:2rem; }
+.line article, .line section { border:1px solid #273340; border-radius:12px; padding:1.5rem; background:#131a22; margin-bottom:1rem; }
+.line h2 { font-size:1.3rem; }
+.line label { display:grid; gap:.4rem; margin-bottom:1rem; }
+.line input,.line textarea { font:inherit; color:#f8fafc; background:#19232d; border:1px solid #64748b; padding:.7rem; border-radius:6px; }
+.line button { font:inherit; cursor:pointer; background:#75e5a0; color:#0b0f14; border:0; border-radius:6px; padding:.65rem .9rem; margin:.3rem; }
+.line button:disabled { opacity:.45; cursor:default; }
+.line small { color:#94a3b8; }
+.coupon { border-color:#75e5a0 !important; }
