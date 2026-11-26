@@ -1,0 +1,60 @@
+.pari-app { min-height:100vh; background:#f7f7fa; color:#24232c; font:15px/1.5 system-ui,sans-serif; color-scheme:light; }
+.pari-app * { box-sizing:border-box; }
+.pari-app button,.pari-app input,.pari-app textarea { font:inherit; }
+.pari-app button { cursor:pointer; }
+.pari-app button:disabled { opacity:.45; cursor:not-allowed; }
+.pari-app a { color:inherit; text-decoration:none; }
+.pari-app header,.pari-app nav { background:white; border-bottom:1px solid #e5e4eb; padding:14px max(24px,calc((100vw - 1200px)/2)); display:flex; align-items:center; gap:28px; }
+.pari-app header strong { color:#7655cc; font-size:22px; }
+.pari-app header span { margin-left:auto; color:#777; }
+.pari-app nav { color:#686773; font-size:14px; margin:0; }
+.pari-app nav a[aria-current="page"] { color:#7655cc; font-weight:700; }
+.pari-app main { max-width:1248px; margin:auto; padding:28px 24px; }
+.pari-app h1 { font-size:30px; margin:8px 0; line-height:1.3; }
+.pari-app h2 { font-size:17px; margin:0 0 16px; }
+.pari-app h3 { font-size:24px; margin:8px 0; }
+.pari-app p { margin:6px 0 16px; max-width:none; }
+.pari-app .muted,.pari-app small { color:#696874; }
+.pari-app small { display:block; font-size:12px; }
+.pari-app .layout { display:grid; grid-template-columns:1.15fr 1fr; gap:24px; align-items:start; margin-top:24px; }
+.pari-app .panel,.pari-app .preview { border:1px solid #e4e2eb; border-radius:16px; padding:22px; background:white; }
+.pari-app .preview { background:#f0eff5; position:sticky; top:16px; margin:0; color:#24232c; }
+.pari-app .card { background:white; border:1px solid #e4e2eb; border-radius:14px; padding:22px; margin-top:16px; }
+.pari-app .type { display:flex; text-align:left; align-items:center; gap:14px; width:100%; background:white; border:1px solid #dedce6; border-radius:12px; padding:13px; margin-bottom:9px; min-height:66px; color:inherit; }
+.pari-app .type.active { border:2px solid #8263df; background:#f6f2ff; padding:12px; }
+.pari-app .type .symbol { font-size:23px; color:#7655cc; width:32px; text-align:center; }
+.pari-app .type .mark { margin-left:auto; color:#7655cc; font-size:20px; }
+.pari-app hr { border:0; border-top:1px solid #e7e5ee; margin:22px 0; }
+.pari-app label { display:block; font-weight:600; font-size:13px; margin:12px 0 6px; }
+.pari-app input,.pari-app textarea { width:100%; border:1px solid #d9d7e2; border-radius:9px; padding:10px 12px; background:white; color:inherit; min-height:44px; }
+.pari-app textarea { resize:vertical; min-height:80px; }
+.pari-app input:focus-visible,.pari-app textarea:focus-visible,.pari-app button:focus-visible,.pari-app a:focus-visible { outline:2px solid #8263df; outline-offset:2px; }
+.pari-app .row { display:flex; gap:10px; align-items:center; }
+.pari-app .row>* { min-width:0; }
+.pari-app .grow { flex:1; }
+.pari-app .btn { border:1px solid #d9d7e2; background:white; color:#292634; border-radius:9px; padding:10px 16px; min-height:44px; font-weight:600; }
+.pari-app .primary { background:#7655cc; color:white; border-color:#7655cc; }
+.pari-app .wide { width:100%; margin-top:10px; }
+.pari-app .yes,.pari-app .no { flex:1; border-radius:9px; padding:12px; text-align:center; font-weight:650; border:1px solid transparent; }
+.pari-app .yes { background:#eaf7ee; color:#166534; }
+.pari-app .no { background:#fceeee; color:#991b1b; }
+.pari-app .selected { outline:2px solid #8263df; outline-offset:2px; }
+.pari-app .settings { border:1px solid #dedce6; border-radius:12px; padding:14px; margin-top:16px; }
+.pari-app .switch { width:46px; height:26px; border:0; background:#777681; border-radius:20px; padding:3px; display:flex; align-items:center; flex:none; }
+.pari-app .switch.on { background:#8263df; justify-content:flex-end; }
+.pari-app .switch i { width:20px; height:20px; border-radius:50%; background:white; }
+.pari-app .lock { background:#f4f3f8; border-radius:10px; text-align:center; padding:20px; margin-top:10px; }
+.pari-app .choice { display:block; width:100%; text-align:left; margin:9px 0; }
+.pari-app .meta { display:flex; gap:10px; align-items:center; margin:12px 0; }
+.pari-app .meta span { font-size:20px; color:#7655cc; }
+.pari-app .footer { display:flex; justify-content:flex-end; gap:10px; margin:22px 0; }
+.pari-app .error { color:#a51d28; font-size:13px; }
+.pari-app .success { color:#166534; font-weight:600; }
+.pari-app .tag { font-size:12px; font-weight:650; letter-spacing:.04em; color:#696874; }
+.pari-app .status { display:flex; justify-content:space-between; gap:8px; color:#696874; font-size:12px; margin-top:12px; }
+.pari-app .status b { color:#7655cc; }
+@media(max-width:760px) { .pari-app .layout { grid-template-columns:1fr; } .pari-app .preview { position:static; } .pari-app nav { gap:14px; flex-wrap:wrap; } .pari-app main { padding:16px; } .pari-app .panel,.pari-app .preview { padding:15px; } }
+.pari-app .pari-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:16px; }
+.pari-app .pari-list .card { margin:0; display:block; }
+.pari-app .pari-list .card:hover { border-color:#8263df; }
+.pari-app .pari-detail { max-width:760px; margin:24px auto; }

@@ -34,6 +34,7 @@ services:
       GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
       GOTRUE_MAILER_AUTOCONFIRM: "false"
       GOTRUE_DISABLE_SIGNUP: "true"
+      GOTRUE_PASSWORD_MIN_LENGTH: 5
     ports:
       - "127.0.0.1:9999:9999"
   rest:
@@ -58,6 +59,7 @@ services:
     environment:
       SUPABASE_AUTH_URL: http://auth:9999
       SUPABASE_REST_URL: http://rest:3000
+      JWT_SECRET: ${JWT_SECRET:?Run prepare.py}
     ports:
       - "127.0.0.1:${APP_PORT:-3000}:3000"
   proxy:

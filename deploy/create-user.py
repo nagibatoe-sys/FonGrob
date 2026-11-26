@@ -29,8 +29,8 @@ if not re.fullmatch(r'[a-z0-9][a-z0-9._-]{2,31}', login):
 name = args.name.strip()
 if not 1 <= len(name) <= 80:
     parser.error('Имя должно содержать 1–80 символов')
-password = getpass.getpass('Пароль нового пользователя (не менее 12 символов): ')
-if len(password) < 12:
+password = getpass.getpass('Пароль нового пользователя (не менее 5 символов): ')
+if len(password) < 5:
     parser.error('Пароль слишком короткий')
 email = f'{login}@accounts.fongrob.invalid'
 secret = config['JWT_SECRET'].encode()

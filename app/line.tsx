@@ -74,7 +74,7 @@ export function Line() {
     })
   }
   return <main className="line">
-    <header><Link href="/">ФОНГРОБ</Link><nav><Link href="/profile">Профиль</Link><Link href="/wallet">Кошелёк</Link><Link href="/login">Вход и выход</Link></nav></header>
+    <header><Link href="/">ФОНГРОБ</Link><nav><Link href="/pari">Пари</Link><Link href="/profile">Профиль</Link><Link href="/wallet">Кошелёк</Link><Link href="/login">Вход и выход</Link></nav></header>
     <h1>Офисная линия</h1><p>Прогнозы на рабочую реальность · Только виртуальные OfficeCoin</p>
     <p role="status">{message}</p>
     <div className="line-filters"><label>Поиск событий<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Название или условие" /></label>

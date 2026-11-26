@@ -51,7 +51,7 @@ export function PasswordForm({ reset = false }: { reset?: boolean }) {
     {reset && !ready && !done && <p>Откройте ссылку из письма. Если срок действия истёк, запросите новое письмо.</p>}
     {!done && (!reset || ready) && <form onSubmit={submit}>
       {reset ? <>
-        <label>Новый пароль<input type="password" name="password" minLength={8} autoComplete="new-password" required /></label>
+        <label>Новый пароль<input type="password" name="password" minLength={5} autoComplete="new-password" required /></label>
         <label>Повторите пароль<input type="password" name="repeat" autoComplete="new-password" required /></label>
       </> : <label>Рабочая почта<input type="email" name="email" autoComplete="email" required /></label>}
       <button disabled={busy}>{reset ? 'Сохранить пароль' : 'Отправить ссылку'}</button>

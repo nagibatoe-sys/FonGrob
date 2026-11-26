@@ -14,9 +14,10 @@ export function AuthForm() {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     const client = createAuth()
-    void client.getSession().then(({ data }) => { setAuth(client); setEmail(data.session?.user.email || '') })
+    const ready = setTimeout(() => setAuth(client), 0)
+    void client.getSession().then(({ data }) => { setEmail(data.session?.user.email || '') })
     const { data } = client.onAuthStateChange((_, session) => { setEmail(session?.user.email || '') })
-    return () => data.subscription.unsubscribe()
+    return () => { clearTimeout(ready); data.subscription.unsubscribe() }
   }, [])
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()

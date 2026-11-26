@@ -29,8 +29,8 @@ result = subprocess.run(['docker', 'compose', '--env-file', str(root / '.env'), 
 user_id = result.stdout.strip()
 if not user_id:
     raise SystemExit('Пользователь не найден')
-password = getpass.getpass('Новый пароль (не менее 12 символов): ')
-if len(password) < 12:
+password = getpass.getpass('Новый пароль (не менее 5 символов): ')
+if len(password) < 5:
     parser.error('Пароль слишком короткий')
 def enc(data):
     return base64.urlsafe_b64encode(json.dumps(data, separators=(',', ':')).encode()).rstrip(b'=').decode()
