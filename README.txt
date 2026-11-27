@@ -1,0 +1,2 @@
+Portable Windows build 1.0.0
+SHA256 5c905f97392de3ce3aed1f02840f95b58d8db905bbbafaa9ddd8733f5222d1da
