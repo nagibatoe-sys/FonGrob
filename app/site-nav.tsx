@@ -43,6 +43,7 @@ export function SiteNav() {
     return <Link key={href} href={href} aria-current={current ? 'page' : undefined}>{label}</Link>
   }
   return <header className="site-header">
+    <div className="site-ticker"><div><span className="site-ticker-mark" aria-hidden="true"/>ВНУТРЕННЯЯ ЛИНИЯ</div><span>Офисные события · виртуальные OfficeCoin</span><Link href="/line">Смотреть события <span aria-hidden="true">↗</span></Link></div>
     <div className="site-mainbar">
       <Link href="/" className="site-logo">ФОНГРОБ<span> / офисная игра</span></Link>
       <nav className="site-primary" aria-label="Основные действия">{primary.map(link)}</nav>

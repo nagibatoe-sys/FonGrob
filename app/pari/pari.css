@@ -58,3 +58,23 @@
 .pari-app .pari-list .card { margin:0; display:block; }
 .pari-app .pari-list .card:hover { border-color:#8263df; }
 .pari-app .pari-detail { max-width:760px; margin:24px auto; }
+
+/* Existing pari configurator receives the same sportsbook palette. */
+.pari-app { background:var(--canvas); color:var(--ink); color-scheme:dark; }
+.pari-app header,.pari-app nav { background:#0e181a; border-color:var(--line); }
+.pari-app header strong,.pari-app nav a[aria-current="page"],.pari-app .type .symbol,.pari-app .type .mark,.pari-app .meta span,.pari-app .status b { color:var(--accent); }
+.pari-app header span,.pari-app nav,.pari-app .muted,.pari-app small,.pari-app .tag,.pari-app .status { color:var(--muted); }
+.pari-app .panel,.pari-app .card { background:var(--panel); color:var(--ink); border-color:var(--line); border-radius:4px; }
+.pari-app .preview { background:#162323; color:var(--ink); border-color:var(--accent-line); border-radius:4px; }
+.pari-app .type,.pari-app .settings { background:#172427; border-color:#425655; color:var(--ink); border-radius:4px; }
+.pari-app .type.active,.pari-app .selected { border-color:var(--accent); outline-color:var(--accent); background:var(--accent-soft); }
+.pari-app hr { border-color:var(--line); }
+.pari-app input,.pari-app textarea { background:var(--field); border-color:#486060; color:var(--ink); border-radius:4px; }
+.pari-app input:focus-visible,.pari-app textarea:focus-visible,.pari-app button:focus-visible,.pari-app a:focus-visible { outline-color:var(--accent); }
+.pari-app .btn { background:#1a2a2b; color:var(--ink); border-color:#46605b; border-radius:4px; }
+.pari-app .primary { background:var(--accent); color:#0b1510; border-color:var(--accent); }
+.pari-app .yes { background:#1c3b2b; color:#b7f0c9; border-color:#2f6041; }
+.pari-app .no { background:#3b2527; color:#ffc5c9; border-color:#754249; }
+.pari-app .switch.on { background:var(--accent); }
+.pari-app .lock { background:#1d292b; border:1px solid var(--line); }
+.pari-app .pari-list .card:hover { border-color:var(--accent); background:var(--panel-raised); }

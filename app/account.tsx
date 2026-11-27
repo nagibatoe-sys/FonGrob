@@ -1,6 +1,7 @@
 'use client'
 import { ProfileSettings } from './profile/settings'
 import { ProfileStats } from './profile/stats'
+import { AppearanceSettings } from './profile/appearance'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { browserClient } from './client'
@@ -38,7 +39,7 @@ export function AccountView({ wallet = false }: { wallet?: boolean }) {
   }, [uid, wallet])
   const account = result?.uid === uid ? result?.account : undefined
   const format = (n: number) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(n)
-  return <><SiteNav/><main className="auth"><Link href="/">ФОНГРОБ</Link>
+  return <><SiteNav/><main className={wallet ? 'auth wallet-page' : 'auth account-page'}><Link href="/">ФОНГРОБ</Link>
     <h1>{wallet ? 'Кошелёк' : 'Мой профиль'}</h1>
     {uid === null ? <Link href="/login">Войти в аккаунт</Link> : account ? <>
       <h2>{account.name}</h2><p>Баланс <strong>{format(account.balance)} OC</strong></p>
@@ -46,6 +47,7 @@ export function AccountView({ wallet = false }: { wallet?: boolean }) {
         departmentId={account.departmentId} departments={account.departments}
         onSaved={(name, departmentId) => setResult(current => current?.uid === uid && current.account
           ? { uid, account: { ...current.account, name, departmentId } } : current)} />}
+      {!wallet && uid && <AppearanceSettings uid={uid}/>}
       {!wallet && <ProfileStats/>}
       {wallet && <section><h2>Последние операции</h2>
         {account.entries.length ? <ul>{account.entries.map(entry => <li key={entry.id}>

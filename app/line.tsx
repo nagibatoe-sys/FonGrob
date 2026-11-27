@@ -86,7 +86,7 @@ export function Line() {
     <div className="event-grid">{visibleEvents.map(event => <article id={`event-${event.id}`} key={event.id}>
       <small>{categories[event.category] || 'Событие'} · {event.status === 'proposed' ? 'На модерации' : event.status === 'open' ? 'Приём прогнозов' : event.status === 'void' ? 'Отменено' : 'Рассчитано'}</small>
       <h2>{event.title}</h2><p>{event.rules}</p><p>Закрытие {new Date(event.closes_at).toLocaleString('ru-RU')}</p>
-      <div className="outcomes">{event.markets.flatMap(market => market.outcomes).map(outcome => <button disabled={busy || event.status !== 'open' || new Date(event.closes_at) <= new Date()} key={outcome.id} onClick={() => setSelection({ event: event.title, outcome, key: crypto.randomUUID() })}>{outcome.label} · {outcome.odds}</button>)}</div>
+      <div className="outcomes">{event.markets.flatMap(market => market.outcomes).map(outcome => <button disabled={busy || event.status !== 'open' || new Date(event.closes_at) <= new Date()} key={outcome.id} onClick={() => setSelection({ event: event.title, outcome, key: crypto.randomUUID() })}><span>{outcome.label}</span><strong>{Number(outcome.odds).toFixed(2)}</strong></button>)}</div>
       {admin && event.status === 'proposed' && <button disabled={busy} onClick={() => void run(() => browserClient().rpc('publish_event', { event_id: event.id }))}>Опубликовать</button>}
       {admin && ['proposed','open'].includes(event.status) && <button disabled={busy} onClick={() => {
         const reason = window.prompt('Причина отмены (не менее 10 символов)')
@@ -97,7 +97,7 @@ export function Line() {
       }}>Результат — {outcome.label}</button>)}</details>}
     </article>)}</div>
     {!visibleEvents.length && <p>{statusFilter === 'open' && !search ? 'Сейчас нет открытых событий. Вы можете предложить новое ниже.' : 'Событий по выбранным условиям нет.'}</p>}
-    {selection && <section className="coupon"><h2>Купон</h2><p>{selection.event} · {selection.outcome.label} · {selection.outcome.odds}</p>
+    {selection && <section className="coupon" role="region" aria-label="Купон ставки"><h2>Купон</h2><p>{selection.event} · {selection.outcome.label} · {selection.outcome.odds}</p>
       <form onSubmit={place}><label>Ставка, OC<input name="stake" type="number" min="10" max="250" step=".01" defaultValue="10" required /></label>
         <button disabled={busy}>Подтвердить прогноз</button><button type="button" disabled={busy} onClick={() => setSelection(undefined)}>Убрать из купона</button></form></section>}
     <section id="propose-event"><h2>Предложить событие</h2><p>Укажите проверяемое условие ответа «Да». Здоровье, зарплата, увольнение и личная жизнь исключены.</p>

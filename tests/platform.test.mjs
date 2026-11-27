@@ -39,6 +39,20 @@ test('shop is atomic and idempotent; achievements and seasons use server data', 
   assert.equal((await db.query('select count(*) total from wallet_transactions where operation_key=$1',['shop_refund:'+request])).rows[0].total,1)
   assert.equal((await db.query('select stock from reward_products where id=$1',[product])).rows[0].stock,1)
   await db.exec('set role authenticated')
+  await db.query('select set_config($1,$2,false)',['test.uid',member])
+  const cosmetic='a10c0000-0000-4000-8000-000000000001'
+  const styleRequest='00000000-0000-0000-0000-000000000024'
+  await db.query('select purchase_reward($1,$2)',[styleRequest,cosmetic])
+  await db.query('select purchase_reward($1,$2)',[styleRequest,cosmetic])
+  assert.equal((await db.query('select balance from wallets where profile_id=$1',[member])).rows[0].balance,'760.00')
+  assert.equal((await db.query('select status from reward_orders where id=$1',[styleRequest])).rows[0].status,'issued')
+  assert.equal((await db.query('select accent_code from profiles where id=$1',[member])).rows[0].accent_code,'gold')
+  await assert.rejects(db.query('select purchase_reward(gen_random_uuid(),$1)',[cosmetic]),/уже приобретено/)
+  await db.query("select equip_cosmetic('standard')")
+  await assert.rejects(db.query("select equip_cosmetic('ice')"),/не приобретено/)
+  await db.query("select equip_cosmetic('gold')")
+  await assert.rejects(db.query("update profiles set accent_code='ice' where id=$1",[member]),{code:'42501'})
+  await db.query('select set_config($1,$2,false)',['test.uid',admin])
   const season=(await db.query('select count(*) total from season_directory()')).rows[0].total
   assert.equal(season,1)
   const event=(await db.query("select propose_event('Демо событие','Проверяемое условие',now()+interval '1 day') id")).rows[0].id
