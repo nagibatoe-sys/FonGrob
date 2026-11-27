@@ -1,1 +1,29 @@
-<!doctype html><html lang="ru"><meta charset="utf-8"><title>Нет соединения · ФОНГРОБ</title><style>body{background:#0b0f14;color:white;font:18px/1.5 system-ui;display:grid;place-items:center;min-height:90vh;text-align:center}main{max-width:440px}button{background:#75e5a0;border:0;border-radius:6px;padding:12px 18px;font:inherit;cursor:pointer}</style><main><h1>Нет соединения</h1><p>Проверьте интернет и доступность сервера. Ваши данные останутся на сервере.</p><button id="retry">Повторить</button></main><script>document.getElementById('retry').onclick=()=>window.fongrobDesktop.retry()</script></html>
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Нет соединения · ФОНГРОБ</title>
+<style>
+  body{background:#0b0f14;color:white;font:18px/1.5 system-ui;display:grid;place-items:center;min-height:90vh;text-align:center;padding:16px}
+  main{max-width:560px}h1{font-size:38px}p{margin:16px 0}code{color:#92ddff;overflow-wrap:anywhere}
+  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0}
+  button{background:#75e5a0;border:0;border-radius:6px;padding:12px 18px;font:inherit;cursor:pointer}
+  button.secondary{background:#253342;color:#fff}small{color:#aebbc8;display:block}
+</style>
+<main>
+  <h1>Нет соединения</h1>
+  <p>Не удалось открыть сервер <code id="server"></code>.</p>
+  <p>Проверьте доступность сайта в браузере или укажите действующий адрес сервера. Ваши данные хранятся на сервере.</p>
+  <div class="actions"><button id="retry">Повторить</button><button id="settings" class="secondary">Настроить сервер</button></div>
+  <small id="error"></small>
+</main>
+<script>
+  window.fongrobDesktop.getConnectionStatus().then(status => {
+    if (!status) return
+    document.getElementById('server').textContent = status.serverUrl
+    document.getElementById('error').textContent = status.error
+  })
+  document.getElementById('retry').onclick = () => window.fongrobDesktop.retry()
+  document.getElementById('settings').onclick = () => window.fongrobDesktop.openSettings()
+</script>
+</html>

@@ -7,6 +7,7 @@ const icon = path.join(__dirname, 'assets', 'icon.png')
 let mainWindow
 let settingsWindow
 let settings
+let connectionError = ''
 const settingPath = () => path.join(app.getPath('userData'), 'settings.json')
 const tokenPath = () => path.join(app.getPath('userData'), 'session.bin.json')
 const isValidUrl = value => {
@@ -57,11 +58,14 @@ function setupIpc() {
     if (!isSettingsSender(event) || !value || !isValidUrl(value.serverUrl) || typeof value.notificationsEnabled !== 'boolean') return { error: 'Укажите корректный HTTPS-адрес сервера.' }
     settings = { ...settings, serverUrl: value.serverUrl, notificationsEnabled: value.notificationsEnabled }
     writeJson(settingPath(), settings)
-    mainWindow?.loadURL(settings.serverUrl)
+    loadServer()
     return { ok: true }
   })
-  ipcMain.handle('offline:retry', event => { if (!isOfflineSender(event)) return false; mainWindow?.loadURL(settings.serverUrl); return true })
+  ipcMain.handle('offline:retry', event => { if (!isOfflineSender(event)) return false; loadServer(); return true })
+  ipcMain.handle('offline:status', event => isOfflineSender(event) ? { serverUrl: settings.serverUrl, error: connectionError } : null)
+  ipcMain.handle('offline:settings', event => { if (!isOfflineSender(event)) return false; openSettings(); return true })
 }
+function loadServer() { if (mainWindow) void mainWindow.loadURL(settings.serverUrl).catch(() => {}) }
 function openSettings() {
   if (settingsWindow && !settingsWindow.isDestroyed()) { settingsWindow.focus(); return }
   settingsWindow = new BrowserWindow({ width: 480, height: 420, parent: mainWindow, modal: true, title: 'Настройки ФОНГРОБ', icon, webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true } })
@@ -75,11 +79,16 @@ function createWindow() {
   const allowed = url => { try { return new URL(url).origin === serverOrigin() } catch { return false } }
   mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))
   mainWindow.webContents.on('will-navigate', (event, url) => { if (!allowed(url)) event.preventDefault() })
-  mainWindow.webContents.on('did-fail-load', (event, code, description, url, isMainFrame) => { if (isMainFrame && code !== -3 && allowed(url)) mainWindow.loadFile(path.join(__dirname, 'offline.html')) })
+  mainWindow.webContents.on('did-fail-load', (event, code, description, url, isMainFrame) => {
+    if (isMainFrame && code !== -3 && allowed(url)) {
+      connectionError = `${description} (${code})`
+      void mainWindow.loadFile(path.join(__dirname, 'offline.html'))
+    }
+  })
   mainWindow.webContents.session.setPermissionRequestHandler((contents, permission, callback) => callback(permission === 'notifications' && settings.notificationsEnabled && allowed(contents.getURL())))
   mainWindow.on('close', () => { settings.windowBounds = mainWindow.getBounds(); writeJson(settingPath(), settings) })
-  Menu.setApplicationMenu(Menu.buildFromTemplate([{ label: 'ФОНГРОБ', submenu: [{ label: 'Настройки', click: openSettings }, { label: 'Обновить', click: () => mainWindow.loadURL(settings.serverUrl) }, { role: 'quit', label: 'Выход' }] }, { label: 'Вид', submenu: [{ role: 'reload', label: 'Перезагрузить' }, { role: 'togglefullscreen', label: 'На весь экран' }] }]))
-  mainWindow.loadURL(settings.serverUrl)
+  Menu.setApplicationMenu(Menu.buildFromTemplate([{ label: 'ФОНГРОБ', submenu: [{ label: 'Настройки', click: openSettings }, { label: 'Обновить', click: loadServer }, { role: 'quit', label: 'Выход' }] }, { label: 'Вид', submenu: [{ role: 'reload', label: 'Перезагрузить' }, { role: 'togglefullscreen', label: 'На весь экран' }] }]))
+  loadServer()
 }
 app.whenReady().then(() => { settings = loadSettings(); setupIpc(); createWindow() })
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit() })

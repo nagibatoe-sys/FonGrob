@@ -7,5 +7,7 @@ contextBridge.exposeInMainWorld('fongrobDesktop', {
   },
   getSettings: () => ipcRenderer.invoke('settings:get'),
   setSettings: value => ipcRenderer.invoke('settings:set', value),
-  retry: () => ipcRenderer.invoke('offline:retry')
+  retry: () => ipcRenderer.invoke('offline:retry'),
+  getConnectionStatus: () => ipcRenderer.invoke('offline:status'),
+  openSettings: () => ipcRenderer.invoke('offline:settings')
 })

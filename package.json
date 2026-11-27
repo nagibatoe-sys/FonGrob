@@ -1,6 +1,6 @@
 {
   "name": "fongrob",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Корпоративная платформа прогнозов ФОНГРОБ",
   "main": "desktop/main.cjs",
   "scripts": {
