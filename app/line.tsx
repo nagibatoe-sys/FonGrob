@@ -20,6 +20,7 @@ export function Line() {
   const [selection, setSelection] = useState<{ event: string; outcome: Outcome; key: string }>()
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
+  const [statusFilter, setStatusFilter] = useState('open')
   async function refresh() {
     const db = browserClient()
     const [line, tickets, roles] = await Promise.all([
@@ -73,12 +74,16 @@ export function Line() {
       return result
     })
   }
+  const visibleEvents = events.filter(event => (event.title + event.rules).toLowerCase().includes(search.toLowerCase())
+    && (category === 'all' || event.category === category) && (statusFilter === 'all' || event.status === statusFilter))
   return <><SiteNav/><main className="line">
-    <h1>Офисная линия</h1><p>Прогнозы на рабочую реальность · Только виртуальные OfficeCoin</p>
+    <h1>События и прогнозы</h1><p>Выберите событие, проверьте условия и укажите исход. Ставки оформляются только в виртуальных OfficeCoin.</p>
     <p role="status">{message}</p>
     <div className="line-filters"><label>Поиск событий<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Название или условие" /></label>
-      <label>Категория<select value={category} onChange={event => setCategory(event.target.value)}><option value="all">Все категории</option>{Object.entries(categories).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label></div>
-    <div className="event-grid">{events.filter(event => (event.title + event.rules).toLowerCase().includes(search.toLowerCase()) && (category === 'all' || event.category === category)).map(event => <article key={event.id}>
+      <label>Категория<select value={category} onChange={event => setCategory(event.target.value)}><option value="all">Все категории</option>{Object.entries(categories).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
+      <label>Статус<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="open">Открытые</option>{admin && <option value="proposed">На модерации</option>}<option value="settled">Завершённые</option><option value="all">Все</option></select></label></div>
+    {admin && events.some(event => event.status === 'proposed') && <p className="line-admin-note">На модерации: {events.filter(event => event.status === 'proposed').length}. <button onClick={() => setStatusFilter('proposed')}>Посмотреть предложения</button></p>}
+    <div className="event-grid">{visibleEvents.map(event => <article id={`event-${event.id}`} key={event.id}>
       <small>{categories[event.category] || 'Событие'} · {event.status === 'proposed' ? 'На модерации' : event.status === 'open' ? 'Приём прогнозов' : event.status === 'void' ? 'Отменено' : 'Рассчитано'}</small>
       <h2>{event.title}</h2><p>{event.rules}</p><p>Закрытие {new Date(event.closes_at).toLocaleString('ru-RU')}</p>
       <div className="outcomes">{event.markets.flatMap(market => market.outcomes).map(outcome => <button disabled={busy || event.status !== 'open' || new Date(event.closes_at) <= new Date()} key={outcome.id} onClick={() => setSelection({ event: event.title, outcome, key: crypto.randomUUID() })}>{outcome.label} · {outcome.odds}</button>)}</div>
@@ -91,12 +96,11 @@ export function Line() {
         if (window.confirm('Рассчитать событие с результатом «' + outcome.label + '»?')) void run(() => browserClient().rpc('settle_event', { event_id: event.id, winning_outcome: outcome.id }))
       }}>Результат — {outcome.label}</button>)}</details>}
     </article>)}</div>
-    {!events.length && <p>Событий пока нет. Предложите первое.</p>}
-    {events.length > 0 && !events.some(event => (event.title + event.rules).toLowerCase().includes(search.toLowerCase()) && (category === 'all' || event.category === category)) && <p>По этому запросу событий нет.</p>}
+    {!visibleEvents.length && <p>{statusFilter === 'open' && !search ? 'Сейчас нет открытых событий. Вы можете предложить новое ниже.' : 'Событий по выбранным условиям нет.'}</p>}
     {selection && <section className="coupon"><h2>Купон</h2><p>{selection.event} · {selection.outcome.label} · {selection.outcome.odds}</p>
       <form onSubmit={place}><label>Ставка, OC<input name="stake" type="number" min="10" max="250" step=".01" defaultValue="10" required /></label>
         <button disabled={busy}>Подтвердить прогноз</button><button type="button" disabled={busy} onClick={() => setSelection(undefined)}>Убрать из купона</button></form></section>}
-    <section><h2>Предложить событие</h2><p>Укажите проверяемое условие ответа «Да». Здоровье, зарплата, увольнение и личная жизнь исключены.</p>
+    <section id="propose-event"><h2>Предложить событие</h2><p>Укажите проверяемое условие ответа «Да». Здоровье, зарплата, увольнение и личная жизнь исключены.</p>
       <form onSubmit={propose}><label>Название<input name="title" minLength={5} maxLength={160} required /></label>
         <label>Категория<select name="category" required>{Object.entries(categories).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
         <label>Условия результата<textarea name="rules" minLength={10} maxLength={2000} required /></label>

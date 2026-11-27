@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { browserClient } from './client'
 import { useEffect, useState, type FormEvent } from 'react'
 
@@ -8,6 +9,7 @@ function createAuth() {
 }
 
 export function AuthForm() {
+  const router = useRouter()
   const [auth, setAuth] = useState<ReturnType<typeof createAuth>>()
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
@@ -36,6 +38,7 @@ export function AuthForm() {
         if (!/^[a-z0-9][a-z0-9._-]{2,31}$/.test(username)) throw Error('invalid login')
         const { error } = await auth.signInWithPassword(credentials)
         if (error) throw error
+        router.replace('/')
       }
     } catch {
       setMessage(email ? 'Не удалось выйти. Попробуйте ещё раз.' : 'Не удалось войти. Проверьте логин и пароль.')
