@@ -51,7 +51,7 @@ export default function UsersPage() {
   }
   const visible = users.filter(user => `${user.login} ${user.display_name}`.toLowerCase().includes(query.toLowerCase()))
   return <main className="admin-users">
-    <header><Link href="/">ФОНГРОБ</Link><nav><Link href="/admin/live">Ставки и пари</Link><Link href="/admin/history">История</Link><Link href="/line">Линия</Link><Link href="/profile">Профиль</Link></nav></header>
+    <header><Link href="/">ФОНГРОБ</Link><nav><Link href="/admin/live">Ставки и пари</Link><Link href="/admin/history">История</Link><Link href="/admin/manage">Управление</Link><Link href="/line">Линия</Link><Link href="/profile">Профиль</Link></nav></header>
     <h1>Пользователи</h1><p>Управление учётными записями сотрудников</p>
     {loading && <p role="status">Загрузка пользователей…</p>}
     {error && <p role="alert" className="admin-error">{error}</p>}

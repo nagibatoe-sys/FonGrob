@@ -7,7 +7,7 @@ test('invite-only registration and opening credit are atomic', async () => {
   const db = new PGlite()
   try {
     await db.exec(`create role authenticated; create role anon; create schema auth;
-      create table auth.users(id uuid primary key default gen_random_uuid(), email text, raw_user_meta_data jsonb);
+      create table auth.users(id uuid primary key default gen_random_uuid(), email text, raw_user_meta_data jsonb, created_at timestamptz default now());
       create function auth.uid() returns uuid language sql stable as $$ select current_setting('test.uid',true)::uuid $$;`)
     const folder = new URL('../supabase/migrations/', import.meta.url)
     for (const file of (await readdir(folder)).sort()) {

@@ -1,7 +1,7 @@
 'use client'
-import Link from 'next/link'
 import { useEffect, useState, type FormEvent } from 'react'
 import { browserClient } from './client'
+import { SiteNav } from './site-nav'
 
 type Outcome = { id: string; label: string; odds: number }
 type Event = { id: string; title: string; rules: string; category: string; status: string; closes_at: string; markets: { outcomes: Outcome[] }[] }
@@ -73,8 +73,7 @@ export function Line() {
       return result
     })
   }
-  return <main className="line">
-    <header><Link href="/">ФОНГРОБ</Link><nav><Link href="/pari">Пари</Link><Link href="/profile">Профиль</Link><Link href="/wallet">Кошелёк</Link><Link href="/login">Вход и выход</Link></nav></header>
+  return <><SiteNav/><main className="line">
     <h1>Офисная линия</h1><p>Прогнозы на рабочую реальность · Только виртуальные OfficeCoin</p>
     <p role="status">{message}</p>
     <div className="line-filters"><label>Поиск событий<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Название или условие" /></label>
@@ -103,5 +102,5 @@ export function Line() {
         <label>Условия результата<textarea name="rules" minLength={10} maxLength={2000} required /></label>
         <label>Приём прогнозов до<input name="date" type="datetime-local" required /></label><button disabled={busy}>Отправить на модерацию</button></form></section>
     <section><h2>Мои прогнозы</h2>{bets.length ? bets.map(bet => <p key={bet.id}>{bet.stake} OC × {bet.odds} · {({pending:'Ожидает результата',won:'Выигрыш',lost:'Проигрыш',void:'Возврат'})[bet.status as 'pending' | 'won' | 'lost' | 'void']}</p>) : <p>Прогнозов пока нет.</p>}</section>
-  </main>
+  </main></>
 }

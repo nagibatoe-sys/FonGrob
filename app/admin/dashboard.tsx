@@ -36,7 +36,7 @@ export function AdminDashboard({ view }: { view: View }) {
   }, [view])
   useEffect(() => { void Promise.resolve().then(load) }, [load])
   return <main className="admin-users">
-    <header><Link href="/">ФОНГРОБ</Link><nav><Link href="/admin/users">Пользователи</Link><Link href="/admin/live">Ставки и пари</Link><Link href="/admin/history">История</Link><Link href="/profile">Профиль</Link></nav></header>
+    <header><Link href="/">ФОНГРОБ</Link><nav><Link href="/admin/users">Пользователи</Link><Link href="/admin/live">Ставки и пари</Link><Link href="/admin/history">История</Link><Link href="/admin/manage">Управление</Link><Link href="/profile">Профиль</Link></nav></header>
     <div className="admin-section-head"><div><h1>{view === 'live' ? 'Актуальные ставки и пари' : 'История игр и операций'}</h1><p>{view === 'live' ? 'Открытые события и все ставки, ожидающие расчёта.' : 'Завершённые события и журнал движения OfficeCoin.'}</p></div><button type="button" onClick={() => void load()}>Обновить</button></div>
     {loading && <p role="status">Загрузка…</p>}{error && <p role="alert" className="admin-error">{error}</p>}
     {!loading && !error && view === 'live' && <div className="admin-stack">

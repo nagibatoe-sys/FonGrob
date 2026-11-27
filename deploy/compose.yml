@@ -48,6 +48,17 @@ services:
       PGRST_DB_SCHEMAS: public
       PGRST_DB_ANON_ROLE: anon
       PGRST_JWT_SECRET: ${JWT_SECRET}
+  season_worker:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run prepare.py}
+    volumes:
+      - ./season-worker.sh:/season-worker.sh:ro
+    command: ["/bin/sh", "/season-worker.sh"]
   app:
     build:
       context: ..

@@ -1,24 +1,60 @@
 {
   "name": "fongrob",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "description": "Корпоративная платформа прогнозов ФОНГРОБ",
+  "main": "desktop/main.cjs",
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "build": "next build",
     "start": "next start",
     "dev": "next dev",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "desktop:dev": "electron .",
+    "desktop:build:win": "npm run build && electron-builder --win nsis --x64",
+    "desktop:build:linux": "npm run build && electron-builder --linux AppImage --x64",
+    "desktop:build:portable": "npm run build && electron-builder --win portable --x64"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "private": true,
+  "build": {
+    "appId": "ru.fongrob.desktop",
+    "productName": "ФОНГРОБ",
+    "directories": {
+      "output": "dist-desktop"
+    },
+    "files": [
+      "desktop/**/*",
+      "package.json",
+      "!node_modules/**",
+      "!.env*",
+      "!deploy/.env"
+    ],
+    "asar": true,
+    "win": {
+      "target": "nsis",
+      "icon": "desktop/assets/icon.ico",
+      "artifactName": "FonGrob-${version}-${arch}-Setup.${ext}",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "desktop/assets/icon.png"
+    },
+    "portable": {
+      "artifactName": "FonGrob-${version}-${arch}-Portable.${ext}"
+    }
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.2",
     "next": "^16.4.6",
@@ -30,6 +66,8 @@
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.1",
     "@types/react-dom": "^19.3.0",
+    "electron": "^39.8.10",
+    "electron-builder": "^26.18.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.6",
     "typescript": "^5.9.3"

@@ -1,8 +1,10 @@
 'use client'
 import { ProfileSettings } from './profile/settings'
+import { ProfileStats } from './profile/stats'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { browserClient } from './client'
+import { SiteNav } from './site-nav'
 
 type Entry = { id: string; amount: number; operation_key: string; created_at: string }
 type Account = { departmentId: string | null; departments: { id: string; name: string }[]; name: string; balance: number; entries: Entry[]; isAdmin: boolean }
@@ -36,7 +38,7 @@ export function AccountView({ wallet = false }: { wallet?: boolean }) {
   }, [uid, wallet])
   const account = result?.uid === uid ? result?.account : undefined
   const format = (n: number) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(n)
-  return <main className="auth"><Link href="/">ФОНГРОБ</Link>
+  return <><SiteNav/><main className="auth"><Link href="/">ФОНГРОБ</Link>
     <h1>{wallet ? 'Кошелёк' : 'Мой профиль'}</h1>
     {uid === null ? <Link href="/login">Войти в аккаунт</Link> : account ? <>
       <h2>{account.name}</h2><p>Баланс <strong>{format(account.balance)} OC</strong></p>
@@ -44,13 +46,14 @@ export function AccountView({ wallet = false }: { wallet?: boolean }) {
         departmentId={account.departmentId} departments={account.departments}
         onSaved={(name, departmentId) => setResult(current => current?.uid === uid && current.account
           ? { uid, account: { ...current.account, name, departmentId } } : current)} />}
+      {!wallet && <ProfileStats/>}
       {wallet && <section><h2>Последние операции</h2>
         {account.entries.length ? <ul>{account.entries.map(entry => <li key={entry.id}>
           {entry.operation_key === 'opening' ? 'Стартовое начисление' : entry.operation_key}
           {' · '}{format(entry.amount)} OC · {new Date(entry.created_at).toLocaleDateString('ru-RU')}
         </li>)}</ul> : <p>Операций пока нет.</p>}
       </section>}
-      <nav><Link href={wallet ? '/profile' : '/wallet'}>{wallet ? 'Мой профиль' : 'История кошелька'}</Link>{account.isAdmin && <><Link href="/admin/users">Пользователи</Link><Link href="/admin/live">Ставки и пари</Link><Link href="/admin/history">История</Link></>}<Link href="/login">Управление входом</Link></nav>
+      <nav><Link href={wallet ? '/profile' : '/wallet'}>{wallet ? 'Мой профиль' : 'История кошелька'}</Link>{account.isAdmin && <><Link href="/admin/users">Пользователи</Link><Link href="/admin/live">Ставки и пари</Link><Link href="/admin/history">История</Link><Link href="/admin/manage">Управление</Link></>}<Link href="/login">Управление входом</Link></nav>
     </> : <p role="status">{uid && result?.uid === uid ? 'Не удалось загрузить данные. Обновите страницу.' : 'Загрузка…'}</p>}
-  </main>
+  </main></>
 }
